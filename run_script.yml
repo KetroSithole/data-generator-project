@@ -1,0 +1,30 @@
+name: Generate Dummy Data
+
+on:
+  workflow_dispatch: # Allows you to run it manually from the Actions tab
+  schedule:
+    - cron: '0 0 * * *' # Runs daily at midnight
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install pandas numpy
+
+      - name: Run script
+        run: python generate_data.py
+
+      - name: Upload result
+        uses: actions/upload-artifact@v3
+        with:
+          name: generated-csv
+          path: dummy_order_data.csv
